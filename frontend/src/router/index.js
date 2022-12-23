@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Kangaroo from '@/components/Kangaroo'
+import KangarooList from '@/components/KangarooList'
+import AddKangaroo from '@/components/AddKangaroo'
 
 Vue.use(Router)
 
@@ -9,7 +10,12 @@ export default new Router({
     {
       path: '/',
       name: 'Kangaroo',
-      component: Kangaroo
+      component: KangarooList
+    },
+    {
+      path: '/add',
+      name: 'Add Kangaroo',
+      component: AddKangaroo
     }
   ]
 })
