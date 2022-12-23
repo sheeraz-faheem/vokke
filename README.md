@@ -1,6 +1,9 @@
-### REQUIREMENT: Docker Desktop
 
-## INSTRUCTIONS
+---
+# API #
+### REQUIREMENT: Docker Desktop
+--
+### INSTRUCTIONS
 1. Run `docker-compose up -d`
 2. Run `docker ps`, copy CONTAINER ID of container named 'laravel_app'
 3. Run `docker exec -it <CONTAINER ID> sh`
@@ -24,10 +27,21 @@
 ### Start php development server
 7. Run `php artisan serve --host=0.0.0.0`
 
-Navigate to `http://localhost:8000`
+8. Navigate to `http://localhost:8000`
 
 ### TESTING
 
 1. Enter docker app container Run `docker exec -it <CONTAINER ID> sh`
 2. Run `php artisan migrate --env=testing`
 2. Run `php artisan test`
+
+--
+---
+# FOR FRONTEND
+
+### REQUIREMENT: npm, node
+--
+1. Run `cd frontend`
+2. Run `npm install`
+3. Run `npm run dev`
+4. Navigate to `http://localhost:8080`
