@@ -6,6 +6,7 @@ import router from './router'
 import { BootstrapVue } from 'bootstrap-vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import 'devextreme/dist/css/dx.light.css'
 
 // Import Bootstrap and BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'

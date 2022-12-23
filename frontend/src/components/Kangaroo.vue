@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="kangaroo">
     <b-container>
       <b-row class="justify-content-md-center">
         <b-col sm="6">
@@ -9,14 +9,14 @@
             fade
             variant="success"
           >
-            Kangaroo successfully added!
+            {{ message }}
           </b-alert>
           <b-card>
-            <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+            <b-form @submit="updateKangaroo">
               <b-form-group id="input-group-2" label="Name:" label-for="input-2">
                 <b-form-input
                   id="input-2"
-                  v-model="form.name"
+                  v-model="kangaroo.name"
                   placeholder="Enter name"
                   required
                 ></b-form-input>
@@ -25,7 +25,7 @@
               <b-form-group id="input-group-2" label="Nickname:" label-for="input-2">
                 <b-form-input
                   id="input-2"
-                  v-model="form.nickname"
+                  v-model="kangaroo.nickname"
                   placeholder="Enter nickname"
                 ></b-form-input>
               </b-form-group>
@@ -33,7 +33,7 @@
               <b-form-group id="input-group-2" label="Weight:" label-for="input-2">
                 <b-form-input
                   id="input-2"
-                  v-model="form.weight"
+                  v-model="kangaroo.weight"
                   placeholder="Enter Weight"
                   required
                 ></b-form-input>
@@ -42,7 +42,7 @@
               <b-form-group id="input-group-2" label="Height:" label-for="input-2">
                 <b-form-input
                   id="input-2"
-                  v-model="form.height"
+                  v-model="kangaroo.height"
                   placeholder="Enter Weight"
                   required
                 ></b-form-input>
@@ -51,7 +51,7 @@
               <b-form-group id="input-group-3" label="Gender:" label-for="input-3">
                 <b-form-select
                   id="input-3"
-                  v-model="form.gender"
+                  v-model="kangaroo.gender"
                   :options="genders"
                   required
                 ></b-form-select>
@@ -60,7 +60,7 @@
               <b-form-group id="input-group-2" label="Color:" label-for="input-2">
                 <b-form-input
                   id="input-2"
-                  v-model="form.color"
+                  v-model="kangaroo.color"
                   placeholder="Enter color"
                 ></b-form-input>
               </b-form-group>
@@ -68,7 +68,7 @@
               <b-form-group id="input-group-3" label="Friendliness:" label-for="input-3">
                 <b-form-select
                   id="input-3"
-                  v-model="form.friendliness"
+                  v-model="kangaroo.friendliness"
                   :options="friendliness"
                 ></b-form-select>
               </b-form-group>
@@ -76,13 +76,12 @@
               <b-form-group id="input-group-3" label="Birthdate:" label-for="input-3">
                 <b-form-datepicker
                   id="example-datepicker"
-                  v-model="form.birthday"
+                  v-model="kangaroo.birthday"
                   class="mb-2"
                 ></b-form-datepicker>
               </b-form-group>
 
-              <b-button type="submit" variant="primary">Submit</b-button>
-              <b-button type="reset" variant="danger">Reset</b-button>
+              <b-button type="submit" variant="primary">Update</b-button>
             </b-form>
           </b-card>
         </b-col>
@@ -95,60 +94,40 @@
 import KangarooService from '../services/KangarooService'
 
 export default {
+  name: 'kangaroo',
   data () {
     return {
       success: false,
-      form: {
-        name: '',
-        nickname: '',
-        weight: 0,
-        height: 0,
-        color: '',
-        friendliness: '',
-        gender: '',
-        birthday: ''
-      },
+      kangaroo: null,
+      message: 'Kangaroo was updated successfully!',
       friendliness: [{ text: 'Select One', value: null }, 'Friendly', 'Not Friendly'],
-      genders: [{ text: 'Select One', value: null }, 'Male', 'Female'],
-      show: true
+      genders: [{ text: 'Select One', value: null }, 'Male', 'Female']
     }
   },
   methods: {
-    onSubmit (event) {
-      event.preventDefault()
-
-      KangarooService.create(this.form)
-        .then((response) => {
+    getKangaroo (id) {
+      KangarooService.get(id)
+        .then(response => {
+          this.kangaroo = response.data.data
+          console.log(this.kangaroo)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    updateKangaroo () {
+      KangarooService.update(this.kangaroo.id, this.kangaroo)
+        .then(response => {
           console.log(response.data)
           this.success = true
         })
-    },
-    onReset (event) {
-      event.preventDefault()
-
-      this.form.name = ''
-      this.form.nickname = ''
-      this.form.weight = 0
-      this.form.height = 0
-      this.form.gender = ''
-      this.form.color = ''
-      this.form.friendliness = ''
-      this.form.birthday = ''
-
-      // Trick to reset/clear native browser form validation state
-      this.show = false
-      this.$nextTick(() => {
-        this.show = true
-      })
-    },
-    countDownChanged (dismissCountDown) {
-      this.dismissCountDown = dismissCountDown
+        .catch(e => {
+          console.log(e)
+        })
     }
+  },
+  mounted () {
+    this.getKangaroo(this.$route.params.id)
   }
 }
 </script>
-<style>
-.form-horizontal .control-label{
-    text-align: left;
-}
-</style>
