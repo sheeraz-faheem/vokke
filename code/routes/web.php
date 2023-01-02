@@ -16,3 +16,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('/kangaroo', function() {
+    return view('kangaroo/list');
+});
+
+Route::get('/kangaroo/{id}/update', function() {
+    return view('kangaroo/update');
+});
+
+Route::get('/kangaroo/add', function() {
+    return view('kangaroo/add');
+});
